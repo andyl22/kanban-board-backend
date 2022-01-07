@@ -7,7 +7,7 @@ var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
 var mongoose = require('mongoose');
 
-const port = process.env.PORT || 3001;
+var port = process.env.PORT || 5000;
 require('dotenv').config();
 
 var mongoDB = 'mongodb+srv://andylau:Rapidcar32@cluster0.hoizu.mongodb.net/kanbanDatabase?retryWrites=true&w=majority'

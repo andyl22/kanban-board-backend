@@ -5,6 +5,7 @@ const passport = require("passport");
 
 exports.login = function (req, res, next) {
   passport.authenticate("local", { session: false }, (err, user, info) => {
+    console.log(req.json)
     if (err || !user) {
       return res.status(400).json({
         message: info.message,
@@ -20,7 +21,7 @@ exports.login = function (req, res, next) {
       // generate a signed son web token with the contents of user object and return it in the response
 
       const token = jwt.sign(JSON.stringify({name: user.username, id: user._id}), process.env.SECRET);
-      return res.json({ user, token });
+      return res.json({ token });
     });
   })(req, res, next);
 };
