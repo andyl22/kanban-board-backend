@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
-const passport = require("passport");
-const jwt_decode = require("jwt-decode");
+var jwt = require("jsonwebtoken");
+var passport = require("passport");
+var jwt_decode = require("../utilitiyScripts/jwtDecode");
 
 exports.login = function (req, res, next) {
   passport.authenticate("local", { session: false }, (err, user, info) => {
@@ -29,7 +29,6 @@ exports.login = function (req, res, next) {
 
 exports.logout = function (req, res, next) {
   res.clearCookie("authToken");
-  res.clearCookie("refreshToken");
   res.json({ status: "Token cookie cleared" });
 };
 
@@ -47,3 +46,4 @@ exports.refreshToken = function (req, res, next) {
     res.json("Missing Auth Token");
   }
 };
+
