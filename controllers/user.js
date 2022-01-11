@@ -3,11 +3,13 @@ const bcrypt = require("bcrypt");
 
 exports.createUser = function (req, res, next) {
   const { username, password } = req.body;
+  console.log(username, password)
   User.findOne({ username: username }, (err, user) => {
     if (err) return err;
     if (user) {
+      res.status(400)
       res.json({
-        response: `There is already an existing user: ${user.username}`,
+        message: `There is already an existing user: ${user.username}`,
       });
     } else {
       bcrypt.hash(password, 10, (err, hashPassword) => {
@@ -19,7 +21,7 @@ exports.createUser = function (req, res, next) {
         });
         newUser.save(function (err) {
           if (err) return next(err);
-          res.json({ response: "Success" });
+          res.json({ message: "Success" });
         });
       });
     }
