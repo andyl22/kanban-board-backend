@@ -1,0 +1,21 @@
+var jwt_decode = require("jwt-decode");
+var { refreshToken } = require("../controllers/authController");
+
+module.exports = authenticateRequest = function (req, res, next) {
+  if (req.cookies.authToken) {
+    try {
+      return jwt_decode(req.cookies.authToken);
+    } catch (e) {
+      return { message: e };
+    }
+  } else if (req.cookies.refreshToken) {
+    if (req.cookies.refreshToken) {
+      const authToken = refreshToken(req, res, next);
+      if (authToken) return jwt_decode(authToken);
+    } else {
+      return e;
+    }
+  } else {
+    return { message: "No Token Was Provided." };
+  }
+};

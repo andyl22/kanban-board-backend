@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 var KanbanItemsSchema = new Schema({
   name: {type: String, required: true, maxLength: 100},
   description: {type: String, required: false, maxLength: 1500},
-  project: {type: Schema.Types.ObjectId, ref: 'KanbanProject', required: true},
+  project: {type: Schema.Types.ObjectId, ref: 'KanbanProjects', required: true},
+  project_section: {type: Schema.Types.ObjectId, ref: 'KanbanSection', required: true},
   date_of_creation: {type: Date}
 })
 

@@ -1,6 +1,6 @@
 var jwt = require("jsonwebtoken");
 var passport = require("passport");
-var jwt_decode = require("../utilitiyScripts/jwtDecode");
+var jwt_decode = require('jwt-decode');
 
 exports.login = function (req, res, next) {
   passport.authenticate("local", { session: false }, (err, user, info) => {
@@ -33,17 +33,8 @@ exports.logout = function (req, res, next) {
 };
 
 exports.refreshToken = function (req, res, next) {
-  if (req.cookies.refreshToken) {
-    const decodedToken = jwt_decode(req.cookies.refreshToken);
-    const authToken = jst.sign(
-      { username: decodedToken.id },
-      process.env.SECRET,
-      { expiresIn: "300s" }
-    );
-    res.cookie("authToken", authToken, { httpOnly: true, maxAge: 300000 });
-    res.json("Refreshed Token");
-  } else {
-    res.json("Missing Auth Token");
-  }
+  const decodedToken = jwt_decode(req.cookies.refreshToken);
+  const authToken = jwt.sign({ id: decodedToken.id }, process.env.SECRET, {expiresIn: "300s",});
+  res.cookie("authToken", authToken, { httpOnly: true, maxAge: 300000 });
+  return authToken;
 };
-
