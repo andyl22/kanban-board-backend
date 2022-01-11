@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var authController = require("../controllers/authController");
+var authController = require("../controllers/auth");
 
 
 router.get('/', (req, res, next) => {

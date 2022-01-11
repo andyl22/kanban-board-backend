@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var projectsController = require('../controllers/kanbanProjects');
+var projectController = require('../controllers/project');
 
-router.post('/', projectsController.projectsListByUserID);
+router.post('/', projectController.projectsListByUserID);
 
-router.post('/createProject', projectsController.createProject);
+router.post('/createProject', projectController.createProject);
 
-router.get('/getProjectList', projectsController.getProjectList);
+router.get('/getProjectList', projectController.getProjectList);
 
 module.exports = router;

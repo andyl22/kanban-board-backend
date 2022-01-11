@@ -25,5 +25,3 @@ exports.createUser = function (req, res, next) {
     }
   });
 };
-
-exports.loginUser = function (req, res, next) {};

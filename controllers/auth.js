@@ -1,6 +1,6 @@
 var jwt = require("jsonwebtoken");
 var passport = require("passport");
-var jwt_decode = require('jwt-decode');
+var jwt_decode = require("jwt-decode");
 
 exports.login = function (req, res, next) {
   passport.authenticate("local", { session: false }, (err, user, info) => {
@@ -15,7 +15,6 @@ exports.login = function (req, res, next) {
       if (err) {
         res.send(err);
       }
-      // generate a signed son web token with the contents of user object and return it in the response
       const authToken = jwt.sign({ id: user._id }, process.env.SECRET, {
         expiresIn: "300s",
       });
@@ -29,12 +28,15 @@ exports.login = function (req, res, next) {
 
 exports.logout = function (req, res, next) {
   res.clearCookie("authToken");
+  res.clearCookie("refreshToken");
   res.json({ status: "Token cookie cleared" });
 };
 
 exports.refreshToken = function (req, res, next) {
   const decodedToken = jwt_decode(req.cookies.refreshToken);
-  const authToken = jwt.sign({ id: decodedToken.id }, process.env.SECRET, {expiresIn: "300s",});
+  const authToken = jwt.sign({ id: decodedToken.id }, process.env.SECRET, {
+    expiresIn: "300s",
+  });
   res.cookie("authToken", authToken, { httpOnly: true, maxAge: 300000 });
   return authToken;
 };

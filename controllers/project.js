@@ -1,4 +1,4 @@
-var Project = require("../models/kanbanProjects");
+var Project = require("../models/project");
 var authenticateRequest = require("../utilitiyScripts/authenticateRequest");
 
 exports.projectsListByUserID = function (req, res, next) {
@@ -13,36 +13,31 @@ exports.projectsListByUserID = function (req, res, next) {
 };
 
 exports.createProject = function (req, res, next) {
-  const userID = authenticateRequest(req.cookies.authToken).id;
-  if (userID) {
+  const decodedToken = authenticateRequest(req, res, next);
+  if (decodedToken.errorMessage) {
+    res.json(decodedToken.errorMessage);
+  } else if (decodedToken) {
     const project = new Project({
       name: req.body.projectName,
-      user: userID,
+      user: decodedToken.id,
     });
-    project.save(function (err) {
+    project.save(function (err, project) {
       if (err) return next(err);
-      res.json({ message: `Created project: ${req.body.projectName}` });
+      res.json({ message: `Created project: ${project.name}`, project: project });
     });
-  } else if (req.cookies.refreshToken) {
-    res.json({ message: "Refreshing Token" });
-  } else {
-    res.json({ message: "No JWT token provided." });
   }
 };
 
 exports.getProjectList = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
-  if (decodedToken.message) {
-    res.json(decodedToken.message);
+  if (decodedToken.errorMessage) {
+    res.json(decodedToken.errorMessage);
   } else if (decodedToken) {
     Project.find({ user: decodedToken.id })
       .sort({ name: 1 })
-      .populate("user", "username")
       .exec(function (err, listOfProjects) {
         if (err) return next(err);
         res.json({ projects: listOfProjects });
       });
-  } else {
-    res.json({message: "Something went wrong."})
   }
 };

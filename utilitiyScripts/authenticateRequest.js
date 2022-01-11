@@ -1,12 +1,12 @@
 var jwt_decode = require("jwt-decode");
-var { refreshToken } = require("../controllers/authController");
+var { refreshToken } = require("../controllers/auth");
 
 module.exports = authenticateRequest = function (req, res, next) {
   if (req.cookies.authToken) {
     try {
       return jwt_decode(req.cookies.authToken);
     } catch (e) {
-      return { message: e };
+      return { errorMessage: e };
     }
   } else if (req.cookies.refreshToken) {
     if (req.cookies.refreshToken) {
