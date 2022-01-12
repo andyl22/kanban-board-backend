@@ -1,9 +1,31 @@
-var ProjectSection = require('../models/projectSection');
-var authenticateRequest = require('../utilitiyScripts/authenticateRequest');
+var ProjectSection = require("../models/projectSection");
+var authenticateRequest = require("../utilitiyScripts/authenticateRequest");
 
-exports.createSection = (req, res, next) => {
+exports.createSection = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
-    res.json({message: decodedToken});
+    res.json(decodedToken.errorMessage);
+  } else if (decodedToken) {
+    const project = new ProjectSection({
+      name: req.body.sectionName,
+      project: req.body.projectID
+    });
+    project.save(function (err, section) {
+      if (err) return next(err);
+      res.json({ message: `Created project section: ${section.name}`, section });
+    });
   }
-}
+};
+
+exports.sectionByProjectId = function (req, res, next) {
+  const decodedToken = authenticateRequest(req, res);
+  if (decodedToken.errorMessage) {
+    res.json(decodedToken.errorMessage);
+  } else {
+    ProjectSection.find({ project: req.body.id })
+      .exec(function (err, listOfSections) {
+        if (err) return err;
+        res.json({ projects: listOfSections })
+      }) 
+  }
+};

@@ -3,12 +3,14 @@ var authenticateRequest = require("../utilitiyScripts/authenticateRequest");
 
 exports.projectsListByUserID = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res);
-  if (!decodedToken) {
-    console.log("No Token Provided");
-    res.json({ status: "No Token Provided" });
+  if (decodedToken.errorMessage) {
+    res.json(decodedToken.errorMessage);
   } else {
-    console.log(decodedToken);
-    res.json({ status: "done" });
+    Project.find({ user: decodedToken.id })
+      .exec(function (err, listOfProjects) {
+        if (err) return err;
+        res.json({ projects: listOfProjects })
+      }) 
   }
 };
 

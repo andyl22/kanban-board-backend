@@ -16,6 +16,6 @@ module.exports = authenticateRequest = function (req, res, next) {
       return e;
     }
   } else {
-    return { message: "No Token Was Provided." };
+    return { errorMessage: "No Token Was Provided." };
   }
 };
