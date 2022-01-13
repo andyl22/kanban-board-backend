@@ -4,7 +4,7 @@ var authenticateRequest = require("../utilitiyScripts/authenticateRequest");
 exports.projectsListByUserID = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res);
   if (decodedToken.errorMessage) {
-    res.json(decodedToken.errorMessage);
+    res.status(401).json({error: decodedToken.errorMessage});
   } else {
     Project.find({ user: decodedToken.id })
       .exec(function (err, listOfProjects) {
@@ -17,7 +17,7 @@ exports.projectsListByUserID = function (req, res, next) {
 exports.createProject = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
-    res.json(decodedToken.errorMessage);
+    res.status(401).json({error: decodedToken.errorMessage});
   } else if (decodedToken) {
     const project = new Project({
       name: req.body.projectName,
@@ -33,7 +33,7 @@ exports.createProject = function (req, res, next) {
 exports.getProjectList = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
-    res.json(decodedToken.errorMessage);
+    res.status(401).json({error: decodedToken.errorMessage});
   } else if (decodedToken) {
     Project.find({ user: decodedToken.id })
       .sort({ name: 1 })

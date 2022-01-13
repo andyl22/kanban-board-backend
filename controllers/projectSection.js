@@ -4,8 +4,9 @@ var authenticateRequest = require("../utilitiyScripts/authenticateRequest");
 exports.createSection = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
-    res.json(decodedToken.errorMessage);
+    res.status(401).json({error: decodedToken.errorMessage});
   } else if (decodedToken) {
+    console.log(req.body)
     const project = new ProjectSection({
       name: req.body.sectionName,
       project: req.body.projectID
@@ -20,12 +21,12 @@ exports.createSection = function (req, res, next) {
 exports.sectionByProjectId = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res);
   if (decodedToken.errorMessage) {
-    res.json(decodedToken.errorMessage);
+    res.status(401).json({error: decodedToken.errorMessage});
   } else {
     ProjectSection.find({ project: req.body.id })
       .exec(function (err, listOfSections) {
         if (err) return err;
-        res.json({ projects: listOfSections })
+        res.json({ sections: listOfSections })
       }) 
   }
 };

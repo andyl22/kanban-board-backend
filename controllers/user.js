@@ -7,9 +7,8 @@ exports.createUser = function (req, res, next) {
   User.findOne({ username: username }, (err, user) => {
     if (err) return err;
     if (user) {
-      res.status(400)
-      res.json({
-        message: `There is already an existing user: ${user.username}`,
+      res.status(200).json({
+        error: `There is already an existing user: ${user.username}`,
       });
     } else {
       bcrypt.hash(password, 10, (err, hashPassword) => {

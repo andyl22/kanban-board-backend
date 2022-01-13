@@ -5,10 +5,7 @@ var jwt_decode = require("jwt-decode");
 exports.login = function (req, res, next) {
   passport.authenticate("local", { session: false }, (err, user, info) => {
     if (err || !user) {
-      return res.status(400).json({
-        message: info.message,
-        user: user,
-      });
+      return res.json({error: info.message});
     }
 
     req.login(user, { session: false }, (err) => {
