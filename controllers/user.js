@@ -11,7 +11,7 @@ exports.createUser = function (req, res, next) {
         error: `There is already an existing user: ${user.username}`,
       });
     } else {
-      bcrypt.hash(password, 10, (err, hashPassword) => {
+password, 10, (err, hashPassword) => {
         if (err) return next(err);
         const newUser = new User({
           username: username,
