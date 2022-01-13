@@ -3,7 +3,14 @@ const bcrypt = require("bcrypt");
 
 exports.createUser = function (req, res, next) {
   const { username, password } = req.body;
-  console.log(username, password)
+
+  if (!username || !password) {
+    res.status(200).json({
+      error: `Missing username or password`,
+    });
+    return;
+  }
+
   User.findOne({ username: username }, (err, user) => {
     if (err) return err;
     if (user) {
@@ -11,7 +18,7 @@ exports.createUser = function (req, res, next) {
         error: `There is already an existing user: ${user.username}`,
       });
     } else {
-password, 10, (err, hashPassword) => {
+      bcrypt.hash(password, 10, (err, hashPassword) => {
         if (err) return next(err);
         const newUser = new User({
           username: username,
