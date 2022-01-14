@@ -33,6 +33,7 @@ exports.createProject = function (req, res, next) {
 exports.getProjectList = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
+    console.log(decodedToken.errorMessage)
     res.status(401).json({error: decodedToken.errorMessage});
   } else if (decodedToken) {
     Project.find({ user: decodedToken.id })

@@ -1,5 +1,6 @@
 const User = require("../models/users");
 const bcrypt = require("bcrypt");
+var generateAndSetAuthTokens = require('../utilitiyScripts/generateAndSetAuthTokens');
 
 exports.createUser = function (req, res, next) {
   const { username, password } = req.body;
@@ -25,8 +26,9 @@ exports.createUser = function (req, res, next) {
           password: hashPassword,
           active: true,
         });
-        newUser.save(function (err) {
+        newUser.save(function (err, document) {
           if (err) return next(err);
+          generateAndSetAuthTokens({id: document.id}, res);
           res.json({ message: "Success" });
         });
       });

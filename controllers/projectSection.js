@@ -25,7 +25,7 @@ exports.sectionByProjectId = function (req, res, next) {
   } else {
     ProjectSection.find({ project: req.body.id })
       .exec(function (err, listOfSections) {
-        if (err) return err;
+        if (err) return next(err);
         res.json({ sections: listOfSections })
       }) 
   }

@@ -22,6 +22,7 @@ var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var projectsRouter = require('./routes/projects');
 var projectSectionRouter = require('./routes/projectSection');
+var sectionItemRouter = require('./routes/sectionItem');
 
 var app = express();
 app.set('port', process.env.PORT)
@@ -53,6 +54,7 @@ app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/projects', projectsRouter);
 app.use('/projectSection', projectSectionRouter);
+app.use('/sectionItem', sectionItemRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

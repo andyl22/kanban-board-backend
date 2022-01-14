@@ -1,23 +1,17 @@
-var jwt = require("jsonwebtoken");
 var passport = require("passport");
 var jwt_decode = require("jwt-decode");
+var jwt = require("jsonwebtoken");
+var generateAndSetAuthTokens = require('../utilitiyScripts/generateAndSetAuthTokens');
 
 exports.login = function (req, res, next) {
   passport.authenticate("local", { session: false }, (err, user, info) => {
     if (err || !user) {
-      return res.json({error: info.message});
+      return res.json({ error: info.message });
     }
 
     req.login(user, { session: false }, (err) => {
-      if (err) {
-        res.send(err);
-      }
-      const authToken = jwt.sign({ id: user._id }, process.env.SECRET, {
-        expiresIn: "300s",
-      });
-      const refreshToken = jwt.sign({ id: user._id }, process.env.SECRET);
-      res.cookie("authToken", authToken, { httpOnly: true, maxAge: 300000 });
-      res.cookie("refreshToken", refreshToken, { httpOnly: true });
+      if (err) res.send(err);
+      generateAndSetAuthTokens({id: user.id}, res);
       res.json("Success");
     });
   })(req, res, next);
