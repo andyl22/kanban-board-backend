@@ -7,10 +7,10 @@ exports.createSectionItem = function (req, res, next) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else if (decodedToken) {
     const sectionItem = new SectionItem({
-      name: req.body.name,
+      name: req.body.sectionName,
+      description: req.body.sectionDescription,
       sectionID: req.body.sectionID,
       projectID: req.body.projectID,
-      description: req.body.description,
       date_of_creation: req.body.date_of_creation,
     });
     sectionItem.save(function (err, sectionItem) {
