@@ -6,12 +6,13 @@ exports.createSectionItem = function (req, res, next) {
   if (decodedToken.errorMessage) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else if (decodedToken) {
+    console.log(req.body)
     const sectionItem = new SectionItem({
-      name: req.body.sectionName,
-      description: req.body.sectionDescription,
+      name: req.body.itemName,
+      description: req.body.itemDescription,
       sectionID: req.body.sectionID,
       projectID: req.body.projectID,
-      date_of_creation: req.body.date_of_creation,
+      date_of_creation: req.body.dateOfCreation,
     });
     sectionItem.save(function (err, sectionItem) {
       if (err) return next(err);
