@@ -23,12 +23,12 @@ exports.createSectionItem = function (req, res, next) {
   }
 };
 
-exports.sectionItemBySectionID = function (req, res, next) {
+exports.sectionItemsBySectionID = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res);
   if (decodedToken.errorMessage) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else {
-    SectionItem.find({ sectionID: req.body.id }).exec(function (
+    SectionItem.find({ sectionID: req.body.sectionID }).exec(function (
       err,
       listOfSections
     ) {

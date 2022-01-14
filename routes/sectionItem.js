@@ -4,6 +4,6 @@ var sectionItemController = require('../controllers/sectionItem');
 
 router.post('/createSectionItem', sectionItemController.createSectionItem);
 
-router.post('/sectionItemBySectionID', sectionItemController.sectionItemBySectionID);
+router.post('/sectionItemsBySectionID', sectionItemController.sectionItemsBySectionID);
 
 module.exports = router;
