@@ -22,6 +22,23 @@ exports.createSection = function (req, res, next) {
   }
 };
 
+exports.deleteSection = function (req, res, next) {
+  const decodedToken = authenticateRequest(req, res, next);
+  if (decodedToken.errorMessage) {
+    res.status(401).json({error: decodedToken.errorMessage});
+  } else if (decodedToken) {
+    Project.deleteOne({_id: req.body.id})
+      .then(function(deleteResults) {
+        if (deleteResults.deletedCount === 0) {
+          res.status(401).json({message: `Could not delete`});
+        } else {
+          res.json({message: `Deleted project: ${req.body.id}`});
+        }
+      })
+      .catch(err => console.log(err))
+  }
+};
+
 exports.sectionByProjectId = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res);
   if (decodedToken.errorMessage) {
