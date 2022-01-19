@@ -6,7 +6,7 @@ exports.createSectionItem = function (req, res, next) {
   if (decodedToken.errorMessage) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else if (decodedToken) {
-    console.log(req.body)
+    console.log(req.body);
     const sectionItem = new SectionItem({
       name: req.body.itemName,
       description: req.body.itemDescription,

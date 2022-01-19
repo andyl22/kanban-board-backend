@@ -1,7 +1,7 @@
 var passport = require("passport");
 var jwt_decode = require("jwt-decode");
 var jwt = require("jsonwebtoken");
-var generateAndSetAuthTokens = require('../utilitiyScripts/generateAndSetAuthTokens');
+var generateAndSetAuthTokens = require("../utilitiyScripts/generateAndSetAuthTokens");
 
 exports.login = function (req, res, next) {
   passport.authenticate("local", { session: false }, (err, user, info) => {
@@ -11,7 +11,7 @@ exports.login = function (req, res, next) {
 
     req.login(user, { session: false }, (err) => {
       if (err) res.send(err);
-      generateAndSetAuthTokens({id: user.id}, res);
+      generateAndSetAuthTokens({ id: user.id }, res);
       res.json("Success");
     });
   })(req, res, next);

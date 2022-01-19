@@ -8,6 +8,8 @@ router.post('/getProjectByID', projectController.getProjectByID);
 
 router.post('/createProject', projectController.createProject);
 
+router.post('/updateProjectName', projectController.updateProjectName);
+
 router.post('/deleteProject', projectController.deleteProject);
 
 router.get('/getProjectList', projectController.getProjectList);

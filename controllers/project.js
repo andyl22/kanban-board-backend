@@ -1,6 +1,6 @@
 var Project = require("../models/project");
 var ProjectSection = require("../models/projectSection");
-var SectionItem = require('../models/sectionItem');
+var SectionItem = require("../models/sectionItem");
 var authenticateRequest = require("../utilitiyScripts/authenticateRequest");
 
 exports.projectsListByUserID = function (req, res, next) {
@@ -18,17 +18,17 @@ exports.projectsListByUserID = function (req, res, next) {
   }
 };
 
-exports.getProjectByID = function( req, res, next ) {
+exports.getProjectByID = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else if (decodedToken) {
-      Project.findById(req.body.id, function(err, project) {
-        if(err) return next(err);
-        res.json({project: project})
-      })
+    Project.findById(req.body.id, function (err, project) {
+      if (err) return next(err);
+      res.json({ project: project });
+    });
   }
-}
+};
 
 exports.createProject = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
@@ -49,20 +49,40 @@ exports.createProject = function (req, res, next) {
   }
 };
 
+exports.updateProjectName = function (req, res, next) {
+  console.log(req.body)
+  Project.findByIdAndUpdate(
+    req.body.projectID,
+    { name: req.body.projectName },
+    function (err, doc) {
+      if (err) return next(err);
+      res.json({ message: doc });
+    }
+  );
+};
+
 exports.deleteProject = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else if (decodedToken) {
-    Project.deleteOne({_id: req.body.id}, function (err, project) {
+    Project.deleteOne({ _id: req.body.id }, function (err, project) {
       if (err) return next(err);
-      ProjectSection.deleteMany({project: req.body.id}, (function (err, sections) {
-        if(err) return next(err);
-        SectionItem.deleteMany({projectID: req.body.id}, (function (err, items) {
-          if(err) return next(err);
-          res.json({message: {project: project, sections: sections, items: items}})
-        }))
-      }));
+      ProjectSection.deleteMany(
+        { project: req.body.id },
+        function (err, sections) {
+          if (err) return next(err);
+          SectionItem.deleteMany(
+            { projectID: req.body.id },
+            function (err, items) {
+              if (err) return next(err);
+              res.json({
+                message: { project: project, sections: sections, items: items },
+              });
+            }
+          );
+        }
+      );
     });
   }
 };
