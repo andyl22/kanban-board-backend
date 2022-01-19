@@ -10,9 +10,9 @@ exports.createSectionItem = function (req, res, next) {
     const sectionItem = new SectionItem({
       name: req.body.itemName,
       description: req.body.itemDescription,
-      sectionID: req.body.sectionID,
-      projectID: req.body.projectID,
       date_of_creation: req.body.dateOfCreation,
+      projectID: req.body.projectID,
+      sectionID: req.body.sectionID,
     });
     sectionItem.save(function (err, sectionItem) {
       if (err) return next(err);
@@ -34,7 +34,7 @@ exports.sectionItemsBySectionID = function (req, res, next) {
       listOfSections
     ) {
       if (err) return next(err);
-      res.json({ sections: listOfSections });
+      res.json({ items: listOfSections, sectionID: req.body.sectionID });
     });
   }
 };
