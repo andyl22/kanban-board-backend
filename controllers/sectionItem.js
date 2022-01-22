@@ -24,6 +24,44 @@ exports.createSectionItem = function (req, res, next) {
   }
 };
 
+exports.editSectionItem = function (req, res, next) {
+  const decodedToken = authenticateRequest(req, res, next);
+  if (decodedToken.errorMessage) {
+    res.status(401).json({ error: decodedToken.errorMessage });
+  } else if (decodedToken) {
+    SectionItem.updateOne(
+      { _id: req.body.itemID },
+      {
+        name: req.body.updateBody.itemName,
+        description: req.body.updateBody.itemDescription
+      },
+      function (err, updatedItem) {
+        if (err) return next(err);
+        if(updatedItem.acknowledged) {
+          res.json({ success: true, message: `Updated section items: ${updatedItem.modifiedCount}` });
+        } else {
+          res.json({ success: false, message: `Could not update item: ${req.body.name}`})
+        }
+      }
+    );
+  }
+};
+
+exports.deleteSectionItem = function (req, res, next) {
+  const decodedToken = authenticateRequest(req, res, next);
+  if (decodedToken.errorMessage) {
+    res.status(401).json({ error: decodedToken.errorMessage });
+  } else if (decodedToken) {
+    SectionItem.deleteOne(
+      { _id: req.body.itemID },
+      function (err, deletedItem) {
+        if (err) return next(err);
+        res.json({ message: `Deleted ${deletedItem.deletedCount} item` });
+      }
+    );
+  }
+};
+
 exports.sectionItemsBySectionID = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res);
   if (decodedToken.errorMessage) {

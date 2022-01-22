@@ -1,9 +1,16 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var sectionItemController = require('../controllers/sectionItem');
+var sectionItemController = require("../controllers/sectionItem");
 
-router.post('/createSectionItem', sectionItemController.createSectionItem);
+router.post("/createSectionItem", sectionItemController.createSectionItem);
 
-router.post('/sectionItemsBySectionID', sectionItemController.sectionItemsBySectionID);
+router.post(
+  "/sectionItemsBySectionID",
+  sectionItemController.sectionItemsBySectionID
+);
+
+router.post("/editSectionItem", sectionItemController.editSectionItem);
+
+router.post("/deleteSectionItem", sectionItemController.deleteSectionItem);
 
 module.exports = router;
