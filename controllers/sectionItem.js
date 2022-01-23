@@ -32,8 +32,8 @@ exports.editSectionItem = function (req, res, next) {
     SectionItem.updateOne(
       { _id: req.body.itemID },
       {
-        name: req.body.updateBody.itemName,
-        description: req.body.updateBody.itemDescription
+        name: req.body.updateBody.name,
+        description: req.body.updateBody.description
       },
       function (err, updatedItem) {
         if (err) return next(err);
