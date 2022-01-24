@@ -50,7 +50,6 @@ exports.createProject = function (req, res, next) {
 };
 
 exports.updateProjectName = function (req, res, next) {
-  console.log(req.body)
   Project.findByIdAndUpdate(
     req.body.projectID,
     { name: req.body.projectName },
@@ -90,7 +89,6 @@ exports.deleteProject = function (req, res, next) {
 exports.getProjectList = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
-    console.log(decodedToken.errorMessage);
     res.status(401).json({ error: decodedToken.errorMessage });
   } else if (decodedToken) {
     Project.find({ user: decodedToken.id })

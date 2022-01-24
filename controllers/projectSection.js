@@ -7,7 +7,6 @@ exports.createSection = function (req, res, next) {
   if (decodedToken.errorMessage) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else if (decodedToken) {
-    console.log(req.body);
     const project = new ProjectSection({
       name: req.body.sectionName,
       project: req.body.projectID,
@@ -44,7 +43,6 @@ exports.deleteSectionById = function (req, res, next) {
   if (decodedToken.errorMessage) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else if (decodedToken) {
-    console.log("test", req.body);
     ProjectSection.deleteOne({ _id: req.body.id })
       .then(function (sections) {
         if (sections.deletedCount === 0) {
