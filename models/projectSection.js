@@ -9,6 +9,7 @@ var kanbanSectionSchema = new Schema({
     ref: "KanbanProjects",
     required: true,
   },
+  color: { type: String, required: false},
   date_of_creation: { type: Date },
 });
 

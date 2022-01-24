@@ -11,6 +11,7 @@ exports.createSection = function (req, res, next) {
     const project = new ProjectSection({
       name: req.body.sectionName,
       project: req.body.projectID,
+      color: req.body.color,
     });
     project.save(function (err, section) {
       if (err) return next(err);
@@ -22,20 +23,19 @@ exports.createSection = function (req, res, next) {
   }
 };
 
-exports.editSection = function (req, res, next) {
+exports.editSectionByID = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else if (decodedToken) {
-    Project.deleteOne({ _id: req.body.id })
-      .then(function (deleteResults) {
-        if (deleteResults.deletedCount === 0) {
-          res.status(401).json({ message: `Could not delete` });
-        } else {
-          res.json({ message: `Deleted project: ${req.body.id}` });
-        }
-      })
-      .catch((err) => console.log(err));
+    ProjectSection.findByIdAndUpdate(
+      req.body.id,
+      req.body.updateBody,
+      function (err, doc) {
+        if (err) return next(err);
+        res.json({ message: `Updated section: ${doc}` });
+      }
+    );
   }
 };
 
