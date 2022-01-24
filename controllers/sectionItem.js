@@ -75,3 +75,15 @@ exports.sectionItemsBySectionID = function (req, res, next) {
     });
   }
 };
+
+exports.moveItem = function (req, res, next) {
+  const decodedToken = authenticateRequest(req, res);
+  if (decodedToken.errorMessage) {
+    res.status(401).json({ error: decodedToken.errorMessage });
+  } else {
+    SectionItem.findByIdAndUpdate(req.body.id, {sectionID: req.body.updatedSectionID}, function (err, doc) {
+      if(err) return next(err);
+      res.json({message: `Updated item: ${doc}`});
+    })
+  }
+}
