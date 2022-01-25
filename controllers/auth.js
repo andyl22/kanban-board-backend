@@ -12,7 +12,7 @@ exports.login = function (req, res, next) {
     req.login(user, { session: false }, (err) => {
       if (err) res.send(err);
       generateAndSetAuthTokens({ id: user.id }, res);
-      res.json("Success");
+      res.json({user: user});
     });
   })(req, res, next);
 };

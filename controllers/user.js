@@ -35,3 +35,20 @@ exports.createUser = function (req, res, next) {
     }
   });
 };
+
+exports.updateUser = function (req, res, next) {
+  const decodedToken = authenticateRequest(req, res, next);
+  if (decodedToken.errorMessage) {
+    res.status(401).json({ error: decodedToken.errorMessage });
+  } else {
+    User.findByIdAndUpdate(
+      decodedToken.id,
+      req.body.updateBody,
+      function (err, doc) {
+        if (err) return next(err);
+        console.log(doc);
+        res.json({ message: `Updated user to: ${doc}` });
+      }
+    );
+  }
+};
