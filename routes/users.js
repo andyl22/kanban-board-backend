@@ -9,6 +9,6 @@ router.get('/', function(req, res, next) {
 
 router.post('/registerUser', userController.createUser);
 
-router.post('/updateUser', userController.updateUser);
+router.post('/toggleUserDarkMode', userController.toggleUserDarkMode);
 
 module.exports = router;

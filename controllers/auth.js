@@ -12,7 +12,8 @@ exports.login = function (req, res, next) {
     req.login(user, { session: false }, (err) => {
       if (err) res.send(err);
       generateAndSetAuthTokens({ id: user.id }, res);
-      res.json({user: user});
+      console.log(user)
+      res.json({ name: user.username, darkMode: user.darkMode });
     });
   })(req, res, next);
 };

@@ -36,19 +36,22 @@ exports.createUser = function (req, res, next) {
   });
 };
 
-exports.updateUser = function (req, res, next) {
+exports.toggleUserDarkMode = function (req, res, next) {
   const decodedToken = authenticateRequest(req, res, next);
   if (decodedToken.errorMessage) {
     res.status(401).json({ error: decodedToken.errorMessage });
   } else {
-    User.findByIdAndUpdate(
-      decodedToken.id,
-      req.body.updateBody,
-      function (err, doc) {
-        if (err) return next(err);
-        console.log(doc);
-        res.json({ message: `Updated user to: ${doc}` });
+    User.findOne({ _id: decodedToken.id }, function (err, user) {
+      if (err) return next(err);
+      if (user.darkMode !== req.body.darkMode) {
+        user.darkMode = !user.darkMode;
+        user.save();
+        res.json({
+          message: `Toggled user dark mode preference. ${user.darkMode}`,
+        });
+      } else {
+        res.json({ message: `No need to upate.` });
       }
-    );
+    });
   }
 };

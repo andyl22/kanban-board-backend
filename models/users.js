@@ -6,7 +6,7 @@ var UserSchema = new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   active: { type: Boolean, required: true },
-  theme: { type: String, required: false },
+  darkMode: { type: Boolean, required: false },
   date_of_creation: { type: Date },
 });
 
